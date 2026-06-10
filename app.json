@@ -1,0 +1,106 @@
+{
+  "name": "VanzyBot",
+  "version": "1.0.0",
+  "description": "WhatsApp Multi-Device Automation Bot System - VanzyBot Framework",
+  "main": "index.js",
+  "type": "module",
+
+  "scripts": {
+    "start": "node index.js",
+    "dev": "nodemon index.js",
+    "setup": "npm install",
+    "clean": "rm -rf node_modules package-lock.json",
+    "restart": "pm2 restart all",
+    "logs": "pm2 logs",
+    "update": "npm update",
+    "test": "node index.js"
+  },
+
+  "keywords": [
+    "whatsapp",
+    "bot",
+    "vanzybot",
+    "automation",
+    "multi-device",
+    "baileys",
+    "nodejs",
+    "chatbot",
+    "ai-bot",
+    "system-bot"
+  ],
+
+  "author": "Xabill",
+  "license": "MIT",
+
+  "engines": {
+    "node": ">=18",
+    "npm": ">=8"
+  },
+
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/vanzybot/vanzybot"
+  },
+
+  "bugs": {
+    "url": "https://github.com/vanzybot/vanzybot/issues"
+  },
+
+  "homepage": "https://github.com/vanzybot/vanzybot#readme",
+
+  "dependencies": {
+    "dotenv": "^16.4.5"
+  },
+
+  "devDependencies": {
+    "nodemon": "^3.0.0"
+  },
+
+  "env": {
+    "OWNER_NAME": "Xabill",
+    "OWNER_NUMBER": "",
+    "BOT_NAME": "VanzyBot",
+    "PREFIX": ".",
+    "SESSION_ID": "vanzy_session",
+    "PORT": "3000",
+
+    "MONGODB": "",
+    "DATABASE_URL": "",
+
+    "OPENAI_API": "",
+    "GEMINI_API": "",
+    "CLAUDE_API": "",
+    "TENOR_API_KEY": "",
+
+    "PACKNAME": "VanzyBot",
+    "AUTHOR": "Xabill",
+
+    "MODE": "public",
+    "AUTO_READ": "false",
+    "AUTO_TYPING": "true"
+  },
+
+  "runtime": {
+    "platform": "nodejs",
+    "architecture": "multi-device",
+    "mode": "production",
+    "framework": "vanzybot-core"
+  },
+
+  "build": {
+    "autoInstall": true,
+    "autoStart": true,
+    "cache": true,
+    "optimize": true
+  },
+
+  "support": {
+    "platforms": [
+      "termux",
+      "vps",
+      "railway",
+      "render",
+      "replit"
+    ]
+  }
+}
