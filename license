@@ -1,0 +1,193 @@
+# 📜 VANZYBOT LICENSE AGREEMENT
+## “NEO SHINOBI CORE // UOGARDE ULTRA SYSTEM LICENSE”
+
+> This document defines the legal structure, usage boundaries, and system integrity rules of VanzyBot as a modular automation framework.
+
+---
+
+# 🧠 LICENSE_HEADER = {
+  "project_name": "VanzyBot",
+  "version": "v3.0.0",
+  "license_name": "UOGARDE ULTRA SYSTEM LICENSE",
+  "classification": "restricted open usage framework",
+  "status": "active",
+  "effective_date": "2026-06-10",
+  "jurisdiction": "global (non-binding informational license)"
+}
+
+---
+
+# 📌 1. DEFINITIONS
+
+1.1 “System”  
+Refers to all source code, modules, scripts, documentation, and architecture under VanzyBot project.
+
+1.2 “Developer”  
+Refers to original creator or maintainer of VanzyBot system identity.
+
+1.3 “User”  
+Any individual, group, or organization that accesses, runs, modifies, or distributes the system.
+
+1.4 “Modification”  
+Any change including but not limited to:
+- code editing  
+- structure changes  
+- feature injection  
+- module replacement  
+
+1.5 “Distribution”  
+Sharing, uploading, selling, or publishing system in any form.
+
+---
+
+# ⚙️ 2. USAGE GRANT
+
+You are hereby granted permission to:
+
+✔ Run the system on personal devices or servers  
+✔ Modify system for personal or educational use  
+✔ Study internal architecture and logic flow  
+✔ Integrate modules into private projects  
+✔ Use system for non-commercial experimentation  
+
+This permission is revocable upon violation of terms.
+
+---
+
+# 🚫 3. RESTRICTIONS
+
+The following actions are STRICTLY prohibited:
+
+✘ Claiming ownership of original system  
+✘ Removing or hiding system identity (VanzyBot attribution)  
+✘ Selling, leasing, or monetizing original or modified version  
+✘ Rebranding system as a new proprietary product  
+✘ Uploading system to marketplaces or repositories as original work  
+✘ Using system for illegal, harmful, or exploitative purposes  
+✘ Distributing without license retention  
+
+---
+
+# 🧬 4. SYSTEM INTEGRITY CLAUSE
+
+All modified versions MUST:
+
+- Retain reference to “VanzyBot System”
+- Include mention of “UOGARDE LICENSE”
+- Preserve structural attribution markers where applicable
+- Avoid misleading identity replacement
+- Maintain ethical usage boundaries
+
+Failure to comply invalidates usage permission.
+
+---
+
+# 🔐 5. INTELLECTUAL PROPERTY NOTICE
+
+This system contains proprietary structural design including:
+
+- Event-driven command architecture  
+- Multi-session handling system  
+- AI contextual interaction layer  
+- Media processing pipeline  
+- Anti-crash and security shielding system  
+- Modular expansion framework  
+
+These components are part of the VanzyBot ecosystem identity.
+
+---
+
+# ⚠️ 6. LIABILITY DISCLAIMER
+
+6.1 No Warranty  
+This system is provided “AS IS” without warranty of any kind.
+
+6.2 Risk Acceptance  
+User assumes full responsibility for:
+- deployment  
+- modification  
+- runtime behavior  
+- server or device impact  
+
+6.3 Developer Limitation  
+Developer is not liable for:
+- data loss  
+- system crashes  
+- misuse consequences  
+- external integration failures  
+
+---
+
+# 🧱 7. MODIFICATION RULES
+
+Modifications are allowed only under the following conditions:
+
+✔ Private usage only  
+✔ No commercial redistribution  
+✔ No identity removal  
+✔ Clear separation from original system if forked  
+✔ No misleading representation of origin  
+
+---
+
+# 🌐 8. DISTRIBUTION POLICY
+
+Allowed:
+✔ Private sharing between trusted users  
+✔ Educational usage in closed environments  
+✔ Internal development team use  
+
+Not allowed:
+✘ Public resale or monetization  
+✘ Uploading as standalone product  
+✘ Rebranding as independent system  
+✘ Unauthorized fork publication  
+
+---
+
+# 🧠 9. ETHICAL USAGE CLAUSE
+
+Users must NOT use this system for:
+
+- harmful automation  
+- spam abuse at scale  
+- unauthorized data scraping  
+- system exploitation  
+- malicious bot deployment  
+
+Violation of ethical use voids permission automatically.
+
+---
+
+# 🧩 10. ENFORCEMENT MECHANISM
+
+Enforcement is not legal enforcement but system-level governance:
+
+- Community restriction  
+- Access revocation (if applicable)  
+- Public attribution warning  
+- Support termination from maintainer ecosystem  
+
+---
+
+# 📅 11. VERSIONING RULE
+
+This license applies to:
+
+✔ Current version (v3.0.0)  
+✔ All minor updates (v3.x)  
+✔ Future builds unless explicitly replaced  
+
+---
+
+# 💬 12. FINAL DECLARATION
+
+> “A system without control becomes noise.  
+> A system with structure becomes evolution.”
+
+VanzyBot is not public chaos software.  
+It is a controlled modular system under defined boundaries.
+
+---
+
+# 🏁 END OF LICENSE AGREEMENT
