@@ -3,7 +3,7 @@
 </p>
 
 <p align="center">
-  <img src="https://files.catbox.moe/e2rfev.png"/>
+  <img src="https://files.catbox.moe/e2rfev.png" width="500"/>
 </p>
 
 ---
@@ -12,7 +12,7 @@
 
 <p align="center">
   <img src="https://img.shields.io/badge/STATUS-ACTIVE-00FF00?style=for-the-badge"/>
-  <img src="https://img.shields.io/badge/SYSTEM-MAINTAINED-00D4FF?style=for-the-badge"/>
+  <img src="https://img.shields.io/badge/SYSTEM-STABLE-00D4FF?style=for-the-badge"/>
   <img src="https://img.shields.io/badge/TYPE-WHATSAPP%20BOT-black?style=for-the-badge"/>
   <img src="https://img.shields.io/badge/LICENSE-MIT-yellow?style=for-the-badge"/>
 </p>
@@ -27,7 +27,7 @@
   <img src="https://img.shields.io/badge/DEPLOY%20FORK-000000?style=for-the-badge&logo=github"/>
 </a>
 
-<a href="https://wa.me/628xxxxxxxxxx">
+<a href="https://wa.me/62XXXXXXXXXXX">
   <img src="https://img.shields.io/badge/CONTACT%20OWNER-25D366?style=for-the-badge&logo=whatsapp"/>
 </a>
 
@@ -41,9 +41,15 @@
 
 # 🌌 PROJECT OVERVIEW
 
-**vanzyBot-V1** adalah WhatsApp bot berbasis Node.js menggunakan library Baileys yang dirancang untuk automation system, group management, media tools, dan AI interaction.
+**vanzyBot-V1** adalah WhatsApp bot berbasis Node.js (Baileys) yang digunakan untuk automation chat, tools group, downloader, dan system bot modern.
 
-Bot ini dibuat dengan struktur modular agar mudah dikembangkan, ringan dijalankan, dan stabil di Termux maupun VPS.
+---
+
+<p align="center">
+  <img src="https://cdn-icons-png.flaticon.com/512/5968/5968322.png" width="45"/>
+  <img src="https://cdn-icons-png.flaticon.com/512/2111/2111463.png" width="45"/>
+  <img src="https://cdn-icons-png.flaticon.com/512/919/919825.png" width="45"/>
+</p>
 
 ---
 
