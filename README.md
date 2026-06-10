@@ -7,6 +7,14 @@
 </p>
 
 ---
+<p align="center">
+  <img src="https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png" width="120"/>
+</p>
+
+<p align="center">
+  <b>OWNER</b><br>
+  Xabill
+</p>
 
 # ⚙️ SYSTEM STATUS
 
