@@ -1,255 +1,198 @@
-import "./Configurations.js";
-import ffmpegStatic from "ffmpeg-static";
-process.env.FFMPEG_PATH = ffmpegStatic;
+// ==================================================
+//  VANZYBOT PRO MAX ULTRA CORE SYSTEM
+//  WhatsApp Bot + Plugin + Web Panel + Auto Reconnect
+//  Author: xabill (optimized version)
+// ==================================================
 
-// =========================
-// 📦 BAILEYS CORE
-// =========================
-import {
-  makeWASocket,
-  DisconnectReason,
+require("./config");
+
+const {
+  default: makeWASocket,
+  useMultiFileAuthState,
   fetchLatestBaileysVersion,
-  downloadContentFromMessage,
-  downloadMediaMessage,
-  jidDecode
-} from "@whiskeysockets/baileys";
+  DisconnectReason
+} = require("@whiskeysockets/baileys");
 
-import fs from "fs";
-import express from "express";
-import mongoose from "mongoose";
-import got from "got";
-import pino from "pino";
-import chalk from "chalk";
-import figlet from "figlet";
-import qrcode from "qrcode";
-import qrcodeTerminal from "qrcode-terminal";
-import { Boom } from "@hapi/boom";
-import { fileTypeFromBuffer } from "file-type";
-import path from "path";
-import { fileURLToPath } from "url";
+const pino = require("pino");
+const fs = require("fs");
+const path = require("path");
+const http = require("http");
+const express = require("express");
+const { Boom } = require("@hapi/boom");
 
-// =========================
-// 📁 LOCAL MODULES (TIDAK DIHAPUS)
-// =========================
-import MongoAuth from "./System/MongoAuth/MongoAuth.js";
-import { serialize } from "./System/whatsapp.js";
-import { smsg, getBuffer, getSizeMedia } from "./System/Function2.js";
+// ==================================================
+// GLOBAL STATE SYSTEM
+// ==================================================
+const state = {
+  sock: null,
+  status: "initializing",
+  prefix: global.BOT_PREFIX || ".",
+  plugins: new Map(),
+  reconnectCount: 0
+};
 
-import core from "./Core.js";
-import { readcommands, commands } from "./System/ReadCommands.js";
-
-import {
-  getPluginURLs,
-  checkAntidelete,
-  checkMod
-} from "./System/MongoDB/MongoDb_Core.js";
-
-import welcomeLeft from "./System/Welcome.js";
-
-// =========================
-// 📁 PATH
-// =========================
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-
-// =========================
-// 🌐 EXPRESS SERVER
-// =========================
+// ==================================================
+// EXPRESS WEB SERVER (STATUS PANEL)
+// ==================================================
 const app = express();
-app.use(express.json());
+const PORT = process.env.PORT || 3000;
 
-const PORT = global.port || 3000;
+app.get("/", (req, res) => {
+  res.json({
+    bot: "VANZYBOT PRO MAX ULTRA",
+    status: state.status,
+    prefix: state.prefix,
+    plugins: state.plugins.size,
+    reconnect: state.reconnectCount
+  });
+});
 
-// =========================
-// 💾 PID FILE
-// =========================
-fs.writeFileSync(
-  path.join(__dirname, "atlas.pid"),
-  process.pid.toString()
-);
+app.get("/ping", (req, res) => {
+  res.send("PONG - BOT ACTIVE");
+});
 
-// =========================
-// 🔥 GLOBAL STATE
-// =========================
-let QR_GENERATE = "invalid";
-let status = "initializing";
-let AtlasSocket = null;
-let mongoAuth;
+app.listen(PORT, () => {
+  console.log("🌐 Web Panel running on port " + PORT);
+});
 
-// =========================
-// 🚀 START BOT
-// =========================
-const startAtlas = async () => {
-  try {
-    await mongoose.connect(mongodb);
-    console.log(chalk.green("[ ATLAS ] MongoDB connected ✓"));
-  } catch (err) {
-    console.log(chalk.red("[ DB ERROR ] " + err.message));
+// ==================================================
+// PLUGIN LOADER SYSTEM
+// ==================================================
+function loadPlugins() {
+  const pluginPath = "./plugins";
+  const plugins = new Map();
+
+  if (!fs.existsSync(pluginPath)) {
+    console.log("📁 Plugins folder not found, creating...");
+    fs.mkdirSync(pluginPath);
   }
 
-  mongoAuth = new MongoAuth(sessionId);
-  const { state, saveCreds, clearState } = await mongoAuth.init();
+  const files = fs.readdirSync(pluginPath).filter(f => f.endsWith(".js"));
 
-  console.log(
-    figlet.textSync("VANZYBOT", {
-      font: "Standard",
-      horizontalLayout: "default",
-      width: 70
-    })
-  );
+  for (const file of files) {
+    try {
+      const plugin = require(path.join(__dirname, "plugins", file));
 
-  console.log(
-    chalk.cyan(`[ BOT ] Node ${process.version} | ${process.platform}`)
-  );
+      if (plugin?.name && typeof plugin.execute === "function") {
+        plugins.set(plugin.name.toLowerCase(), plugin);
+        console.log(`✅ Plugin loaded: ${plugin.name}`);
+      }
+    } catch (err) {
+      console.log("❌ Failed plugin:", file);
+    }
+  }
 
-  await readcommands();
+  console.log(`📦 Total plugins: ${plugins.size}`);
+  return plugins;
+}
 
-  // =========================
-  // 🤖 SOCKET
-  // =========================
+// ==================================================
+// BOT START FUNCTION
+// ==================================================
+async function startBot() {
+  const { state: auth, saveCreds } =
+    await useMultiFileAuthState("./session");
+
   const { version } = await fetchLatestBaileysVersion();
 
-  const Atlas = makeWASocket({
-    logger: pino({ level: "silent" }),
-    auth: state,
+  const sock = makeWASocket({
     version,
-    browser: ["VanzyBot-V1", "Chrome", "1.0"]
+    auth,
+    logger: pino({ level: "silent" }),
+    printQRInTerminal: true,
+    browser: ["VANZYBOT", "Chrome", "1.0.0"]
   });
 
-  AtlasSocket = Atlas;
+  state.sock = sock;
+  state.status = "connecting";
 
-  // =========================
-  // 📡 CONNECTION HANDLER
-  // =========================
-  Atlas.ev.on("connection.update", async (update) => {
-    const { connection, lastDisconnect, qr } = update;
+  // load plugins setiap connect
+  state.plugins = loadPlugins();
 
-    status = connection;
+  sock.ev.on("creds.update", saveCreds);
 
-    console.log("[ STATUS ]", connection);
+  // ==================================================
+  // CONNECTION HANDLER
+  // ==================================================
+  sock.ev.on("connection.update", (update) => {
+    const { connection, lastDisconnect } = update;
 
     if (connection === "open") {
-      console.log(chalk.green("🤖 BOT CONNECTED"));
+      state.status = "online";
+      console.log("✅ BOT CONNECTED SUCCESSFULLY");
     }
 
     if (connection === "close") {
-      const reason = new Boom(lastDisconnect?.error)?.output?.statusCode;
+      state.status = "offline";
+      state.reconnectCount++;
 
-      if (reason !== DisconnectReason.loggedOut) {
-        startAtlas();
+      const code = new Boom(lastDisconnect?.error)?.output?.statusCode;
+
+      if (code !== DisconnectReason.loggedOut) {
+        console.log("♻️ Reconnecting bot...");
+        setTimeout(startBot, 3000);
       } else {
-        await clearState();
-        startAtlas();
+        console.log("❌ Logged out - resetting session");
+        fs.rmSync("./session", { recursive: true, force: true });
+        setTimeout(startBot, 3000);
       }
     }
 
-    // =========================
-    // 🔥 QR + PAIRING SUPPORT
-    // =========================
-    if (qr) {
-      QR_GENERATE = qr;
-      qrcodeTerminal.generate(qr, { small: true });
+    if (connection === "connecting") {
+      state.status = "connecting";
+      console.log("🔄 Connecting...");
     }
   });
 
-  // =========================
-  // 💬 MESSAGE CORE (TIDAK DIHAPUS)
-  // =========================
-  Atlas.ev.on("messages.upsert", async (chatUpdate) => {
-    const msg = chatUpdate.messages?.[0];
-    if (!msg?.message) return;
+  // ==================================================
+  // MESSAGE HANDLER CORE
+  // ==================================================
+  sock.ev.on("messages.upsert", async ({ messages }) => {
+    const m = messages[0];
+    if (!m.message) return;
 
-    const m = serialize(Atlas, msg);
-    if (!m?.message) return;
+    const text =
+      m.message.conversation ||
+      m.message.extendedTextMessage?.text ||
+      "";
 
-    core(Atlas, m, commands, chatUpdate);
-  });
+    if (!text.startsWith(state.prefix)) return;
 
-  // =========================
-  // 👥 GROUP HANDLER
-  // =========================
-  Atlas.ev.on("group-participants.update", async (m) => {
-    welcomeLeft(Atlas, m);
-  });
+    const args = text.slice(1).trim().split(" ");
+    const command = args.shift().toLowerCase();
 
-  // =========================
-  // 🧩 PLUGIN INSTALL (TIDAK DIHAPUS)
-  // =========================
-  const installPlugin = async () => {
-    let plugins = [];
-    try {
-      plugins = await getPluginURLs();
-    } catch (e) {
-      console.log("[ PLUGIN ERROR ]", e.message);
-    }
+    const plugin = state.plugins.get(command);
 
-    for (let url of plugins) {
+    const reply = (txt) =>
+      sock.sendMessage(m.key.remoteJid, { text: txt });
+
+    console.log(`📩 CMD: ${command}`);
+
+    if (plugin) {
       try {
-        const { body } = await got(url);
-        fs.writeFileSync("./Plugins/" + path.basename(url), body);
-        console.log("✔ plugin:", url);
-      } catch (e) {}
+        await plugin.execute(sock, m, args);
+      } catch (err) {
+        console.log("❌ Plugin error:", err.message);
+        reply("❌ Error plugin execution");
+      }
+    } else {
+      reply("❌ Command tidak ditemukan\n💡 ketik .menu");
     }
-  };
-
-  await installPlugin();
-
-  Atlas.ev.on("creds.update", saveCreds);
-};
-
-// =========================
-// 🌐 EXPRESS ROUTES
-// =========================
-app.get("/", (req, res) => {
-  res.json({
-    status: true,
-    bot: "VanzyBot-V1"
   });
+}
+
+// ==================================================
+// ERROR HANDLER (ANTI CRASH)
+// ==================================================
+process.on("uncaughtException", (err) => {
+  console.log("⚠️ Crash detected:", err.message);
 });
 
-app.get("/api/status", (req, res) => {
-  res.json({ status });
+process.on("unhandledRejection", (err) => {
+  console.log("⚠️ Promise error:", err.message);
 });
 
-app.get("/api/qr", async (req, res) => {
-  if (status === "open") return res.json({ status: "connected" });
-  if (!QR_GENERATE || QR_GENERATE === "invalid")
-    return res.json({ status: "waiting" });
-
-  const img = await qrcode.toDataURL(QR_GENERATE);
-  res.json({ status: "qr", qr: img });
-});
-
-// =========================
-// 🔥 PAIRING SYSTEM (FULL AKTIF)
-// =========================
-app.post("/api/pair", async (req, res) => {
-  const { phone } = req.body;
-
-  if (!phone) return res.status(400).json({ error: "no number" });
-  if (!AtlasSocket) return res.status(503).json({ error: "not ready" });
-
-  try {
-    const cleaned = phone.replace(/[^0-9]/g, "");
-
-    let code = await AtlasSocket.requestPairingCode(cleaned);
-
-    console.log(
-      chalk.black.bgGreen(" PAIRING CODE "),
-      chalk.black.bgWhite(code)
-    );
-
-    res.json({ code });
-  } catch (e) {
-    res.status(500).json({ error: e.message });
-  }
-});
-
-// =========================
-// 🚀 START SERVER + BOT
-// =========================
-app.listen(PORT, () => {
-  console.log(chalk.green("[ WEB ] running on port " + PORT));
-});
-
-startAtlas();
+// ==================================================
+// AUTO START BOT
+// ==================================================
+startBot();
