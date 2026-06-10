@@ -1,0 +1,142 @@
+# =========================
+# NODE.JS
+# =========================
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+package-lock.json
+yarn.lock
+
+# =========================
+# ENV FILES (SENSITIVE)
+# =========================
+.env
+.env.local
+.env.development
+.env.production
+.env.test
+.env.*.local
+
+# =========================
+# SESSION / WHATSAPP BOT
+# =========================
+session/
+sessions/
+auth_info_baileys/
+baileys_store/
+creds.json
+*.session
+session-*
+connection.json
+
+# =========================
+# DATABASE FILES
+# =========================
+database/
+db/
+data/
+*.db
+*.sqlite
+*.sqlite3
+lowdb.json
+
+# =========================
+# LOG FILES
+# =========================
+logs/
+log/
+*.log
+debug.log
+error.log
+combined.log
+
+# =========================
+# CACHE / TEMP FILES
+# =========================
+tmp/
+temp/
+cache/
+*.tmp
+*.cache
+
+# =========================
+# BUILD OUTPUT
+# =========================
+dist/
+build/
+out/
+release/
+
+# =========================
+# TEST FILES
+# =========================
+test/
+tests/
+__tests__/
+
+# =========================
+# OS FILES
+# =========================
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# =========================
+# IDE / EDITOR
+# =========================
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# =========================
+# PM2 / PROCESS MANAGER
+# =========================
+pm2.log*
+ecosystem.config.js
+logs-pm2/
+
+# =========================
+# BACKUP FILES
+# =========================
+backup/
+*.bak
+*.backup
+old/
+
+# =========================
+# API / SECRET FILES
+# =========================
+apikey.json
+keys.json
+config-secret.js
+secret.json
+
+# =========================
+# UPLOAD / MEDIA CACHE
+# =========================
+uploads/
+media/
+download/
+downloads/
+
+# =========================
+# OPTIONAL BOT CACHE
+# =========================
+stickers/
+sticker-cache/
+image-cache/
+video-cache/
+
+# =========================
+# DEPLOYMENT
+# =========================
+.vercel/
+.netlify/
+render.yaml
+
+# =========================
+# END
+# =========================
